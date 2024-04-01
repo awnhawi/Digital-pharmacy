@@ -1,0 +1,57 @@
+import tkinter as tk
+from tkinter import messagebox, Toplevel
+
+
+
+root = tk.Tk()
+root.geometry("500x300")
+root.title(" login ")
+root.config(bg='black')
+
+
+username='abd'
+password='123'
+
+
+def login():
+    global username 
+    global password
+    written_username=username_entry.get()
+    written_password=password_entry.get()
+    if(written_username=='' or written_password=='' ):
+        messagebox.showwarning(title='error',message="Enter your username and password" )
+    elif(written_username==username and written_password==password):
+        newwindow=Toplevel(root)
+        newwindow.geometry("500x300")
+        newwindow.config(bg='black')
+        welcome_label=tk.Label(newwindow,text="welcome,abd",font=('Arial',20),fg='white',bg='black')
+        welcome_label.place(x=100,y=100)
+    elif(written_username!=username or written_password!=password):
+        messagebox.showerror(title='error',message="your username or password is not correct" )
+
+
+
+
+
+label = tk.Label(root,text='login page',font=('Arial',20),fg='white',bg='black')
+label.pack(pady=20)
+
+
+username_label=tk.Label(root,text="username:",font=('Arial',15,'bold'),bg='black',fg='white')
+username_label.place(x=1,y=75)
+
+password_label=tk.Label(root,text="password:",font=('Arial',15,'bold'),bg='black',fg='white')
+password_label.place(x=1,y=125)
+
+username_entry=tk.Entry(root,font=('Arial',15,'bold'),fg='black',bg='white',)
+username_entry.place(x=110,y=75)
+
+password_entry=tk.Entry(root,show='*',font=('Arial',15,'bold'),fg='black',bg='white',)
+password_entry.place(x=110,y=125)
+
+login_button=tk.Button(root,command=login,text=" ENTER ",font=('Arial',15,'bold'),fg='white',bg='blue')
+login_button.place(x=110,y=175)
+
+
+
+root.mainloop()
