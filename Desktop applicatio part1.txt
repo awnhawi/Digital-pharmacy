@@ -1,0 +1,35 @@
+##This code we use to connect our Desktop Application to the mysql Database##
+
+import mysql.connector
+
+# Establish connection
+connection = mysql.connector.connect(
+    host="localhost",
+    port="3306",
+    user="root",
+    password="abood",
+    database="software"
+)
+
+# Create cursor
+cursor = connection.cursor()
+
+# Execute SQL queries using the cursor
+
+# Close cursor and connection
+cursor.close()
+connection.close()
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+##This is the query we use to change roles and we already created the tabels##
+
+SHOW DATABASES;
+USE software;
+ SELECT * FROM Users;
+
+ALTER TABLE Users
+DROP COLUMN Userscol;
+ALTER TABLE table_name
+DROP COLUMN column_name;
+
+ALTER TABLE Users
+CHANGE COLUMN ROLE ROLE ENUM('Pharmaseist', 'Patiant');
