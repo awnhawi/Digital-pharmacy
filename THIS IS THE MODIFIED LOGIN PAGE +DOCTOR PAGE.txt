@@ -1,0 +1,110 @@
+THIS IS THE MODIFIED LOGIN PAGE 
+-------------------------------
+import tkinter as tk
+from tkinter import messagebox, Toplevel
+import mysql.connector
+from pharmacist_page import open_pharmacist_page
+from doctor_page import open_doctor_page
+
+# Establish connection
+connection = mysql.connector.connect(
+    host="localhost",
+    port="3306",
+    user="root",
+    password="abood",
+    database="software"
+)
+
+# Create cursor
+cursor = connection.cursor()
+
+root = tk.Tk()
+root.geometry("500x300")
+root.title("Login")
+root.config(bg='black')
+
+def open_new_window(message):
+    new_window = Toplevel(root)
+    new_window.geometry("500x300")
+    new_window.config(bg='black')
+    message_label = tk.Label(new_window, text=message, font=('Arial', 20), fg='white', bg='black')
+    message_label.place(x=100, y=100)
+
+def login():
+    written_username = username_entry.get()
+    written_password = password_entry.get()
+
+    if written_username == '' or written_password == '':
+        messagebox.showwarning(title='Error', message="Enter your username and password")
+    else:
+        query = "SELECT Role FROM Users WHERE UserName=%s AND Password=%s"
+        cursor.execute(query, (written_username, written_password))
+        user_role = cursor.fetchone()
+        if user_role:
+            role_name = user_role[0]
+            if role_name == 'Pharmacist':
+                open_pharmacist_page()
+            elif role_name == 'Doctor':
+                open_doctor_page()
+            else:
+                messagebox.showerror(title='Error', message="Invalid role")
+        else:
+            messagebox.showerror(title='Error', message="Your username or password is not correct")
+
+label = tk.Label(root, text='Login Page', font=('Arial', 20), fg='white', bg='black')
+label.pack(pady=20)
+
+username_label = tk.Label(root, text="Username:", font=('Arial', 15, 'bold'), bg='black', fg='white')
+username_label.place(x=1, y=75)
+
+password_label = tk.Label(root, text="Password:", font=('Arial', 15, 'bold'), bg='black', fg='white')
+password_label.place(x=1, y=125)
+
+username_entry = tk.Entry(root, font=('Arial', 15, 'bold'), fg='black', bg='white')
+username_entry.place(x=110, y=75)
+
+password_entry = tk.Entry(root, show='*', font=('Arial', 15, 'bold'), fg='black', bg='white')
+password_entry.place(x=110, y=125)
+
+login_button = tk.Button(root, command=login, text="ENTER", font=('Arial', 15, 'bold'), fg='white', bg='blue')
+login_button.place(x=110, y=175)
+
+root.mainloop()
+
+# Close cursor and connection
+cursor.close()
+connection.close()
+------------------------------------------------------------------------------------------------------------------------------------------------
+THIS IS THE DOCTOR PAGE 
+-----------------------
+import tkinter as tk
+from tkinter import messagebox, Toplevel
+
+def open_doctor_page():
+    new_window = Toplevel()
+    new_window.geometry("500x300")
+    new_window.title("Doctor Page")
+    new_window.config(bg='black')
+
+    label = tk.Label(new_window, text="Doctor Page", font=('Arial', 20, 'bold'), fg='white', bg='black', pady=10)
+    label.pack(fill="x")
+
+    patient_id_label = tk.Label(new_window, text="Enter Patient ID:", font=('Arial', 12), fg='white', bg='black')
+    patient_id_label.pack(anchor="w", padx=10, pady=(0, 5))
+
+    patient_id_entry = tk.Entry(new_window, font=('Arial', 12), fg='black', bg='white')
+    patient_id_entry.pack(anchor="w", padx=10, pady=(0, 5))
+
+    add_patient_button = tk.Button(new_window, text="Add Patient Info", command=lambda: add_patient_info(patient_id_entry.get()), font=('Arial', 12), fg='white', bg='blue')
+    add_patient_button.pack(anchor="w", padx=10, pady=(20, 5))
+
+    medicine_button = tk.Button(new_window, text="Medicine Needed for the Patient", command=lambda: medicine_needed(patient_id_entry.get()), font=('Arial', 12), fg='white', bg='blue')
+    medicine_button.pack(anchor="w", padx=10, pady=(0, 5))
+
+    new_window.mainloop()
+
+def add_patient_info(patient_id):
+    messagebox.showinfo("Add Patient Info", f"Add Patient Info for Patient ID: {patient_id} to be implemented.")
+
+def medicine_needed(patient_id):
+    messagebox.showinfo("Medicine Needed", f"Medicine Needed for Patient ID: {patient_id} to be implemented.")
